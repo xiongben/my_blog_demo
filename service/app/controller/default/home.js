@@ -7,9 +7,12 @@ class HomeController extends Controller {
         this.ctx.body = result
     }
 
-    async list() {
-        const {ctx} = this;
-        ctx.body = '<h1>this is list api</h1>'
+    async getArticleList() {
+        let sql = "SELECT * FROM article LEFT JOIN type ON article.type_id = type.id"
+        const result = await this.app.mysql.query(sql)
+        this.ctx.body = {
+            data: result
+        }
     }
 }
 
