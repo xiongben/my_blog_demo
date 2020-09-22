@@ -14,6 +14,15 @@ class HomeController extends Controller {
             data: result
         }
     }
+
+    async getArticleById() {
+        let id = this.ctx.params.id;
+        let sql = "SELECT * FROM article LEFT JOIN type ON article.type_id = type.id WHERE article.id=" + id;
+        const result = await this.app.mysql.query(sql)
+        this.ctx.body = {
+            data: result
+        }
+    }
 }
 
 module.exports = HomeController;

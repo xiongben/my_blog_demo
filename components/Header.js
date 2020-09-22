@@ -2,8 +2,15 @@ import React from 'react'
 import '../styles/components/header.css'
 import {Row, Col, Menu} from 'antd'
 import {DollarOutlined, VideoCameraOutlined, MenuUnfoldOutlined } from '@ant-design/icons'
+import {Router, useRouter} from "next/router";
 
 const Header = () => {
+    var router = useRouter()
+
+    function gotoHome() {
+        router.push("/")
+    }
+
     return (<div className="header">
                 <Row type="flex" justify="center">
                     <Col xs={24} sm={24} md={10} lg={15} xl={12}>
@@ -12,7 +19,7 @@ const Header = () => {
                     </Col>
                     <Col className="memu-div" xs={0} sm={0} md={14} lg={8} xl={6}>
                         <Menu  mode="horizontal">
-                            <Menu.Item key="home">
+                            <Menu.Item key="home" onClick={()=>gotoHome()}>
                                 <MenuUnfoldOutlined />
                                 首页
                             </Menu.Item>

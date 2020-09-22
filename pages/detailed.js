@@ -10,8 +10,11 @@ import Author from '../components/Author'
 import Advert from '../components/Advert'
 import Footer from '../components/Footer'
 import '../styles/pages/detail.css'
+import axios from "axios";
 
-const DetailPage = () => {
+const DetailPage = (data) => {
+    var detailData = data.data.data[0];
+    console.log(detailData)
     let markdown='# P01:课程介绍和环境搭建\n' +
         '[ **M** ] arkdown + E [ **ditor** ] = **Mditor**  \n' +
         '> Mditor 是一个简洁、易于集成、方便扩展、期望舒服的编写 markdown 的编辑器，仅此而已... \n\n' +
@@ -66,18 +69,18 @@ const DetailPage = () => {
 
                         <div>
                             <div className="detailed-title">
-                                React实战视频教程-技术胖Blog开发(更新08集)
+                                {detailData.title}
                             </div>
 
                             <div className="list-icon center">
                                 <span><Icon type="calendar" /> 2019-06-28</span>
-                                <span><Icon type="folder" /> 视频教程</span>
-                                <span><Icon type="fire" /> 5498人</span>
+                                <span><Icon type="folder" /> {detailData.typeName}</span>
+                                <span><Icon type="fire" /> {detailData.view_count}人</span>
                             </div>
 
                             <div className="detailed-content" >
                                 <ReactMarkdown
-                                    source={markdown}
+                                    source={detailData.article_cointent}
                                     escapeHtml={false}
                                 />
                             </div>
@@ -106,6 +109,12 @@ const DetailPage = () => {
 
         </>
     )
+}
+
+DetailPage.getInitialProps = async (context)=>{
+    let id = context.query.id
+    var res = await axios('http://127.0.0.1:7001/default/getArticleById/'+ id);
+    return {data: res.data}
 }
 
 
