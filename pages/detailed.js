@@ -1,7 +1,9 @@
 import React,{useState} from 'react'
 import Head from 'next/head'
 import {Row, Col , Icon ,Affix,Breadcrumb  } from 'antd'
-import ReactMarkdown from "react-markdown";
+import marked from 'marked'
+import hljs from 'highlight.js'
+import 'highlight.js/styles/monokai-sublime.css'
 import MarkNav from 'markdown-navbar';
 import 'markdown-navbar/dist/navbar.css';
 
@@ -9,12 +11,38 @@ import Header from '../components/Header'
 import Author from '../components/Author'
 import Advert from '../components/Advert'
 import Footer from '../components/Footer'
+import Tocify from '../components/tocify.tsx'
 import '../styles/pages/detail.css'
 import axios from "axios";
+import servicePath from "../config/apiUrl"
 
 const DetailPage = (data) => {
     var detailData = data.data.data[0];
     console.log(detailData)
+    const tocify = new Tocify()
+    const renderer = new marked.Renderer()
+
+    renderer.heading = function (text, level, raw){
+        const anchor = tocify.add(text, level)
+        return `<a id="${anchor}" href="#${anchor}" class="anchor-fix"><h${level}>${text}</h${level}></a>\n`;
+    }
+
+    marked.setOptions({
+        renderer: renderer,
+        gfm: true,
+        pedantic: false,
+        sanitize: false,
+        tables: true,
+        breaks: false,
+        smartLists: true,
+        highlight:function (code){
+            return hljs.highlightAuto(code).value
+        }
+    })
+
+    let html = marked(detailData.article_cointent)
+
+
     let markdown='# P01:课程介绍和环境搭建\n' +
         '[ **M** ] arkdown + E [ **ditor** ] = **Mditor**  \n' +
         '> Mditor 是一个简洁、易于集成、方便扩展、期望舒服的编写 markdown 的编辑器，仅此而已... \n\n' +
@@ -78,11 +106,12 @@ const DetailPage = (data) => {
                                 <span><Icon type="fire" /> {detailData.view_count}人</span>
                             </div>
 
-                            <div className="detailed-content" >
-                                <ReactMarkdown
-                                    source={detailData.article_cointent}
-                                    escapeHtml={false}
-                                />
+                            <div className="detailed-content" dangerouslySetInnerHTML={{__html: html}}>
+
+                                {/*<ReactMarkdown*/}
+                                {/*    source={detailData.article_cointent}*/}
+                                {/*    escapeHtml={false}*/}
+                                {/*/>*/}
                             </div>
 
                         </div>
@@ -96,11 +125,7 @@ const DetailPage = (data) => {
                     <Affix offsetTop={5}>
                     <div className="detailed-nav comm-box">
                         <div className="nav-title">文章目录</div>
-                        <MarkNav
-                            className="article-menu"
-                            source={markdown}
-                            ordered={false}
-                        />
+                        {tocify && tocify.render()}
                     </div>
                     </Affix>
                 </Col>
@@ -113,7 +138,7 @@ const DetailPage = (data) => {
 
 DetailPage.getInitialProps = async (context)=>{
     let id = context.query.id
-    var res = await axios('http://127.0.0.1:7001/default/getArticleById/'+ id);
+    var res = await axios(servicePath.getArticleById + id);
     return {data: res.data}
 }
 

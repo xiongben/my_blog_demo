@@ -9,10 +9,12 @@ import Footer from "../components/Footer";
 import {Row, Col, List, Icon} from "antd";
 import React,{useState} from 'react'
 import axios from 'axios'
+import servicePath from "../config/apiUrl"
 
 
 export default function Home(data) {
     var listData = data.data.data;
+    console.log(listData)
     const [ mylist , setMylist ] = useState(listData)
 
   return (
@@ -57,6 +59,6 @@ export default function Home(data) {
 
 
 Home.getInitialProps = async ()=>{
-    var res = await axios('http://127.0.0.1:7001/default/getArticleList');
+    var res = await axios(servicePath.getArticleList);
     return {data: res.data}
 }

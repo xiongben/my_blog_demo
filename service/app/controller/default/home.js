@@ -8,7 +8,7 @@ class HomeController extends Controller {
     }
 
     async getArticleList() {
-        let sql = "SELECT * FROM article LEFT JOIN type ON article.type_id = type.id"
+        let sql = "SELECT *,a.id AS id FROM article a LEFT JOIN type t ON a.type_id = t.id"
         const result = await this.app.mysql.query(sql)
         this.ctx.body = {
             data: result
