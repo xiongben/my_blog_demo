@@ -11,6 +11,10 @@ const Header = () => {
         router.push("/")
     }
 
+    function gotoListPage() {
+        router.push("/list")
+    }
+
     return (<div className="header">
                 <Row type="flex" justify="center">
                     <Col xs={24} sm={24} md={10} lg={15} xl={12}>
@@ -23,7 +27,7 @@ const Header = () => {
                                 <MenuUnfoldOutlined />
                                 首页
                             </Menu.Item>
-                            <Menu.Item key="video">
+                            <Menu.Item key="video" onClick={()=>gotoListPage()}>
                                 <VideoCameraOutlined />
                                 视频
                             </Menu.Item>

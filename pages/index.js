@@ -14,7 +14,7 @@ import servicePath from "../config/apiUrl"
 
 export default function Home(data) {
     var listData = data.data.data;
-    console.log(listData)
+    // console.log(listData)
     const [ mylist , setMylist ] = useState(listData)
 
   return (

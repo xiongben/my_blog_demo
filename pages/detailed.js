@@ -18,7 +18,7 @@ import servicePath from "../config/apiUrl"
 
 const DetailPage = (data) => {
     var detailData = data.data.data[0];
-    console.log(detailData)
+    // console.log(detailData)
     const tocify = new Tocify()
     const renderer = new marked.Renderer()
 
