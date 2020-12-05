@@ -33,7 +33,7 @@ module.exports = appInfo => {
       // username
       user: 'root',
       // password
-      password: 'xB$12345678',
+      password: 'xb2010550918',
       // database
       database: 'spring',
     },
@@ -44,14 +44,16 @@ module.exports = appInfo => {
   };
 
   config.security = {
-    scrf:{
+    csrf:{
       enable : false
     },
     domainWhiteList:['*']
   };
 
   config.cors = {
-     origin: '*',
+     origin: 'http://localhost:3002',
+     credentials:true, //允许cookie跨域
+    //  withCredentials:true,
     allowMethods: 'GET,POST,HEAD,PUT,DELETE,PATCH,OPTIONS'
   };
 
